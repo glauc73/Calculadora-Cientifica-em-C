@@ -58,20 +58,6 @@ static inline float get_f32(const char* msg){
 
 static inline double get_f64(const char* msg){
     return get_f64_limited(-DBL_MAX,DBL_MAX, msg);
-}
-
-#define input(T, msg)_Generic(T, \
-    int8_t: get_i8,              \
-    int16_t: get_i16,            \
-    int32_t: get_i32,            \
-    int64_t: get_i64,            \
-    uint8_t: get_u8,             \
-    uint16_t: get_u16,           \
-    uint32_t: get_u32,           \
-    uint64_t: get_u64,           \
-    float: get_f32,              \
-    double: get_f64,             \
-    char*: get_str,              \
-    char : get_ch)(msg)          
+}      
 
 #endif
