@@ -4,15 +4,19 @@
 #include "math_parser.h"
 #include "gnrstack.h"
 #ifndef M_PI
-	#define M_PI 3.14159265
+#define M_PI 3.14159265
 #endif
 
 #ifndef M_e
-	#define M_e 2.71828182
+#define M_e 2.71828182
 #endif
 
 #ifndef dx
 #define dx 1e-6
+#endif
+
+#ifndef NUM_VALID_OPERATE
+#define NUM_VALID_OPERATE 8
 #endif
 
 #define ROOT_MAX 64
@@ -60,8 +64,5 @@ size_t select_root(char *func, MathExpression* exp);
 void add_product(char *exp);
 char checkvar(char *exp);
 double get_eval(const char* msg);
-
-extern signed char var;
-extern const func_map functions[NUM_FUNCTIONS];
 
 #endif

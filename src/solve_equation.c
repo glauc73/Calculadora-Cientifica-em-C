@@ -10,8 +10,9 @@
 #include "solve_equation.h"
 #include "config.h"
 
-const char valid_operate[] = {'+', '-', '*', '/', '(', ')', '^', '='};
+const char valid_operate[] = {'+', '-', '*', '/', '(', ')', '^', '=', '[', ']', '{', '}'};
 extern program_config settings;
+extern char var;
 
 //verifica se é um dos operadores validos
 bool isoperat(char ch)
@@ -128,9 +129,9 @@ void add_product(char *input)
 			((atual == ')' && next == '(') )	||	// )( -> )*(
 			(isdigit(atual) && next == '(')		|| 	// 2( -> 2*(
 			(atual == ')' && isdigit(next))		|| 	// )2 -> )*2
-			(isalpha(atual) && isalpha(next)) 	||	// xy -> x*y
 			(isalpha(atual) && next == '(') 	|| 	// x( -> x*(
-			(atual == ')' && isalpha(next));		// )x -> )*x
+			(atual == ')' && isalpha(next))		||	// )x -> )*x
+			(isalpha(atual) && isalpha(next));		// xy -> x*y
 
 		if (implicit_product){
 			strcat(func, "*");
@@ -282,14 +283,13 @@ double get_eval(const char* msg) {
 		printf(msg);
 		solve_type read_status = EVAL;
 		fgets(rbuf, BUFSIZE, stdin);
-
 		rbuf[strcspn(rbuf, "\n")] = '\0';
+
 		char ch = invalid_char(rbuf);
-	
 		if(checkvar(rbuf) != NOT_VAR) read_status = EVAL_X;  
 		if(!balanced_brackets(rbuf)) read_status = BRACKETS_ODD;
 		if(ch != 0) read_status = INVALID_CHAR;
-		if(rbuf[0] == '\0') read_status = NO_RIGHT; 
+		if(!isdigit(rbuf[0])) read_status = NO_RIGHT; 
 
 		switch (read_status)
 		{

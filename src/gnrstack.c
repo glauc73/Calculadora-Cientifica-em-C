@@ -42,6 +42,7 @@ stack_t* CreateStack(int capacity, DataType type) {
 		break;
 	default:
 		printf("%d não representa nenhum tipo primitivo", stk->type);
+		free(stk);
 		return NULL;
 	}
 	stk->top = -1;
@@ -181,19 +182,19 @@ void StackPeek(stack_t* stack, void* peek) {
 	switch (stack->type)
 	{
 	case INT_TYPE:
-		*(int*)peek = stack->data.int_p[stack->top--];
+		*(int*)peek = stack->data.int_p[stack->top];
 		break;
 	case UINT_TYPE:
-		*(unsigned*)peek= stack->data.uint_p[stack->top--];
+		*(unsigned*)peek= stack->data.uint_p[stack->top];
 		break;
 	case FLOAT_TYPE:
-		*(float*)peek = stack->data.float_p[stack->top--];
+		*(float*)peek = stack->data.float_p[stack->top];
 		break;
 	case DOUBLE_TYPE:
-		*(double*)peek = stack->data.double_p[stack->top--];
+		*(double*)peek = stack->data.double_p[stack->top];
 		break;
 	case CHAR_TYPE:
-		*(char*)peek = stack->data.char_p[stack->top--];
+		*(char*)peek = stack->data.char_p[stack->top];
 		break;
 	}
 }
@@ -201,15 +202,16 @@ void StackPeek(stack_t* stack, void* peek) {
 int balanced_brackets(char* exp) {
 	stack_t* stk = CreateStack(Stack_BUFF, CHAR_TYPE);
 	char get_top;
+	int count = 0;
 	if(stk == NULL) {
 		printf("memoria insuficiente");
 		exit(EXIT_FAILURE);
 	}
 
 	while(*exp) {
-		if(*exp == '(') {
+		if(*exp == '('){  //se encontrar uma abertura
 			StackPush(stk, exp);
-		}else if(*exp == ')'){
+		}else if(*exp == ')'){ //se encontrar um fechamento, remove o que está no topo da pilha e compara
 			if(empty(stk)) {
 				DestroyStack(stk);
 				return 0;

@@ -15,18 +15,19 @@
 #define M_e 2.71828182
 #endif
 
-#ifndef NUM_FUNCTIONS
-#define NUM_FUNCTIONS 13
-#endif
-
 #ifndef SIZE_ARR
 #define SIZE_ARR(X) sizeof(X) / sizeof(X[0])
+#endif
+
+#ifndef NUM_FUNCTIONS 
+#define NUM_FUNCTIONS 16
 #endif
 
 void strlower(char *str);
 int lenFunc(char *exp);
 double PI_(char **exp);
 double euller_number(char **exp);
+double parse_abs(char **exp);
 double parse_sqrt(char **exp); 
 double parse_cbrt(char **exp); 
 double parse_tan(char **exp);

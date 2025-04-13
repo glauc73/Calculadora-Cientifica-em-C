@@ -8,7 +8,6 @@
 signed char var = 'x';
 angle_type angle_parser = RAD;
 
-
 const func_map functions[] = // mapa contendo as funcoes e suas respectivas strings
 { 
 	{"tan(", parse_tan},
@@ -21,6 +20,7 @@ const func_map functions[] = // mapa contendo as funcoes e suas respectivas stri
 	{"ln(", parse_ln},
 	{"sqrt(", parse_sqrt},
 	{"cbrt(", parse_cbrt},
+	{"abs(", parse_abs},
 	{"e", euller_number},
 	{"pi", PI_}, 
 	{"(", parse_bracket},
@@ -69,6 +69,13 @@ double parse_bracket(char **exp) {
 	//ao encontrar um parenteses, a função chama a si mesma de forma recursiva, pois a expressão dentro dele independe do resto.
 	double result = parseexp(exp); 
 	//esse raciocinio se segue para as demais funções
+	(*exp)++;
+	return result;
+}
+
+double parse_abs(char **exp) {
+	*exp += strlen("abs(");
+	double result = fabs(parseexp(exp));
 	(*exp)++;
 	return result;
 }

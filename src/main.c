@@ -12,8 +12,8 @@ void call_eval_X(MathExpression* exp, double x);
 void map_operations();
 void table_functions();
 
-extern angle_type angle_parser;  //variavel global de angulo do parser
-extern char valid_operate[8];
+extern char valid_operate[NUM_VALID_OPERATE];
+extern func_map functions[NUM_FUNCTIONS];
 extern program_config settings;
 extern signed char var;
 
@@ -215,12 +215,12 @@ void call_eval_X(MathExpression* exp, double x){
 
 void map_operations() {
 	printf("operadores suportados: \n");
-	for(int i = 0; i < SIZE_ARR(valid_operate); i++){
+	for(int i = 0; i < NUM_VALID_OPERATE; i++){
 		printf("[ %c ]  ", valid_operate[i]);
 		if(i % 4 == 3) putchar('\n');
 	}
 	printf("\nfuncoes suportadas: \n");
-	for(int i = 0; i < SIZE_ARR(functions) - 3; i++){
+	for(int i = 0; i < NUM_FUNCTIONS - 3; i++){
 		printf("[ %-7s ]  ", functions[i].name);
 		if(i % 4 == 3) putchar('\n');
 	}
@@ -243,6 +243,7 @@ void table_functions() {
 		"[  cbrt(  ] -> raiz cubica\n"
 		"[   ln(   ] -> logaritmo na base e\n"
 		"[  log(   ] -> logaritmo na base 10\n"
+		"[  abs(   ] -> modulo (valor absoluto)\n"
 	);
 	putchar('\n');
 }
