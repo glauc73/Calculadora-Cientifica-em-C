@@ -126,6 +126,8 @@ void add_product(char *input)
 			(isdigit(atual) && isalpha(next)) 	|| 	// 2x -> 2*x
 			(isalpha(atual) && isdigit(next))	||	// x2 -> x*2
 			((atual == ')' && next == '(') )	||	// )( -> )*(
+			(isdigit(atual) && next == '(')		|| 	// 2( -> 2*(
+			(atual == ')' && isdigit(next))		|| 	// )2 -> )*2
 			(isalpha(atual) && isalpha(next)) 	||	// xy -> x*y
 			(isalpha(atual) && next == '(') 	|| 	// x( -> x*(
 			(atual == ')' && isalpha(next));		// )x -> )*x
