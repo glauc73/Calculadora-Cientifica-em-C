@@ -84,7 +84,7 @@ int main()
 			scanf("%512[^\n]s", exp.input);
 			setbuf(stdin, NULL);
 			
-			double x0 = get_eval("x: ");
+			double x0 = get_eval("x: "); //usado para ler uma expressão aritmetica que retorna seu resultado em double ao inves de ler apenas um simples numero
 			call_eval_X(&exp, x0);
 			printf("--------------------------------------------------\n");
 			break;
