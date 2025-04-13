@@ -21,6 +21,9 @@
 
 #define ROOT_MAX 64
 #define BUFSIZE 512
+
+extern const char valid_operate[];
+
 typedef enum
 {
 	MULTIPLY_VAR = -1,

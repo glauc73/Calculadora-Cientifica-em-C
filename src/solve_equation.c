@@ -11,8 +11,6 @@
 #include "config.h"
 
 const char valid_operate[] = {'+', '-', '*', '/', '(', ')', '^', '=', '[', ']', '{', '}'};
-extern program_config settings;
-extern char var;
 
 //verifica se é um dos operadores validos
 bool isoperat(char ch)

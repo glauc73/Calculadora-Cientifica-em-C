@@ -12,11 +12,6 @@ void call_eval_X(MathExpression* exp, double x);
 void map_operations();
 void table_functions();
 
-extern char valid_operate[NUM_VALID_OPERATE];
-extern func_map functions[NUM_FUNCTIONS];
-extern program_config settings;
-extern signed char var;
-
 int main()
 {
 	get_config_file();
@@ -84,7 +79,7 @@ int main()
 			scanf("%512[^\n]s", exp.input);
 			setbuf(stdin, NULL);
 			
-			double x0 = get_eval("x: "); //usado para ler uma expressão aritmetica que retorna seu resultado em double ao inves de ler apenas um simples numero
+			double x0 = get_eval("x: ");
 			call_eval_X(&exp, x0);
 			printf("--------------------------------------------------\n");
 			break;

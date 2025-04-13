@@ -10,6 +10,9 @@ typedef struct program_config{
 	int range;
 }program_config;
 
+extern program_config settings;
+extern signed char var;
+
 void get_config_file();
 void save_config_file();
 void select_config(int choice);

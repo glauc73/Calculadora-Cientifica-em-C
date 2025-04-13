@@ -58,5 +58,6 @@ typedef struct{
 	double (*call)(char **);
 } func_map;
 
+extern const func_map functions[];
 
 #endif
