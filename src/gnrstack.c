@@ -181,19 +181,19 @@ void StackPeek(stack_t* stack, void* peek) {
 	switch (stack->type)
 	{
 	case INT_TYPE:
-		*(int*)peek = stack->data.int_p[stack->top--];
+		*(int*)peek = stack->data.int_p[stack->top];
 		break;
 	case UINT_TYPE:
-		*(unsigned*)peek= stack->data.uint_p[stack->top--];
+		*(unsigned*)peek= stack->data.uint_p[stack->top];
 		break;
 	case FLOAT_TYPE:
-		*(float*)peek = stack->data.float_p[stack->top--];
+		*(float*)peek = stack->data.float_p[stack->top];
 		break;
 	case DOUBLE_TYPE:
-		*(double*)peek = stack->data.double_p[stack->top--];
+		*(double*)peek = stack->data.double_p[stack->top];
 		break;
 	case CHAR_TYPE:
-		*(char*)peek = stack->data.char_p[stack->top--];
+		*(char*)peek = stack->data.char_p[stack->top];
 		break;
 	}
 }
