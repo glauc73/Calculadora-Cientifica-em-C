@@ -8,7 +8,7 @@
 signed char var = 'x';
 angle_type angle_parser = RAD;
 
-const func_map functions[] = // mapa contendo as funcoes e suas respectivas strings
+const func_parser functions[] = // mapa contendo as funcoes e suas respectivas strings
 { 
 	{"tan(", parse_tan},
 	{"sen(", parse_sen},
@@ -169,7 +169,7 @@ double PI_(char **exp)
 
 double parsepow(char **exp){
 	// checa se a posicao atual do ponteiro é uma das funcoes mapeadas (sen, cos, log, etc)
-	for (size_t i = 0; i < sizeof(functions) / sizeof(func_map); i++)
+	for (size_t i = 0; i < sizeof(functions) / sizeof(func_parser); i++)
 	{
 		if (strncmp(*exp, functions[i].name, strlen(functions[i].name)) == 0)
 		{

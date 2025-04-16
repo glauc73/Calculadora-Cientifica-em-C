@@ -20,7 +20,7 @@
 #endif
 
 #ifndef NUM_FUNCTIONS 
-#define NUM_FUNCTIONS 16
+#define NUM_FUNCTIONS 14
 #endif
 
 void strlower(char *str);
@@ -56,8 +56,8 @@ typedef enum
 typedef struct{
 	const char *name;
 	double (*call)(char **);
-} func_map;
+} func_parser;
 
-extern const func_map functions[];
+extern const func_parser functions[];
 
 #endif

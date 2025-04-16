@@ -2,6 +2,23 @@
 #include "rootscan.h"
 
 extern program_config settings;
+
+int comp(const void *a, const void *b)
+{
+	if (*(double *)a < *(double *)b)
+		return -1;
+	else if (*(double *)a > *(double *)b)
+		return 1;
+	return 0;
+}
+
+double derivate(char *exp, double value){
+	int temp = settings.angle;
+	settings.angle = RAD;
+	return ((eval_X(exp, (value + dx)) - eval_X(exp, value) )/ dx); //retorna a derivada de exo
+	settings.angle = temp;
+}
+
 size_t select_root(char *func, MathExpression* exp)
 {
 	int range_size = (2 * settings.range + 1 ) / JUMP_X0; 
@@ -9,8 +26,7 @@ size_t select_root(char *func, MathExpression* exp)
 	
 	double p = -settings.range;
 	for (int i = 0; i < range_size ; i++){
-		//nesse intervalo diminui a passada, para que equações envolvendo arco seno, por exenplo, tenham solução
-		test[i] = p;
+		test[i] = p;//nesse intervalo diminui a passada, para que equações envolvendo arco seno, por exenplo, tenham solução
 		p += (-1 <= p && p <= 1) ? 0.2 : JUMP_X0;
 	}
 	
@@ -25,22 +41,19 @@ size_t select_root(char *func, MathExpression* exp)
 	return count;
 }
 
-int filter_root(MathExpression* exp,  double *arr, size_t range_size)
+int filter_root(MathExpression* exp,  double *root_newton, size_t range_size)
 {
 	size_t i = 0, count = 0;
-	while(isnan(arr[i])){
+	while(isnan(root_newton[i])){
 		i++;
-		if(i == range_size) return 0;  //se i percorreu todas as posicoes de arr entao nao existem raizes reais
+		if(i == range_size) return 0;  //se i percorreu todas as posicoes de root_newton entao nao existem raizes reais
 	} 
-	
-	exp->root[count] = arr[i];  //exp->root recebe o primeiro elemento após os nan, que será nossa referencia para comparação
+	exp->root[count] = (fabs(root_newton[i]) < dx) ? 0 : root_newton[i];  //exp->root recebe o primeiro elemento após os nan, que será nossa referencia para comparação
 	count++;
 	while (i < range_size)
 	{
-		if(!DBLCMP(arr[i], exp->root[count - 1]) && !isnan(arr[i])){
-			if(fabs(arr[i]) < dx)		//na linguagem C existe o double -0. como estamos trabalhando com aproximações, é ideal prevenir sua aparição
-				arr[i] = 0;				
-			exp->root[count++] = arr[i]; 
+		if(!DBLCMP(root_newton[i], exp->root[count - 1]) && !isnan(root_newton[i])){		
+			exp->root[count++] = root_newton[i]; 
 		}
 		// caso o conteudo do array seja NAN, significa que um erro ocorreu
 		i++;
@@ -58,16 +71,15 @@ double newton_method(char *exp, double x0)
 		if(isnan(f_x) ) return NAN;
 		
 		double f_x_derivate = derivate(exp, x);
-		
-		if (fabs(f_x_derivate) < EPSILON){	//indica que incontrou um ponto de inflexao (derivada proxima o suficiente de 0)
-			return fabs(f_x) < dx ? x : NAN;   //caso |f_x| seja muito proximo de 0, significa que o ponto de inflexao é uma raiz, se nao, retorna NAN
+		if (fabs(f_x_derivate) < EPSILON) {	//indica que incontrou um ponto de inflexao (derivada proxima o suficiente de 0)
+			return (fabs(x - x0) < dx) && (fabs(f_x) < EPSILON)  ? x : NAN;   //caso |f_x| seja muito proximo de 0, significa que o ponto de inflexao é uma raiz, se nao, retorna NAN
 		}
 		x0 = x;
 		x = x - f_x / f_x_derivate;
 		
 		if (fabs(x - x0) < dx) {//verifica se o valor de x está convergindo
-			return x;
+			return (fabs(x) < dx) ? 0 : x;
 		} 
 	}
-	return i == NEWTON_ITERATIONS ? NAN : x; //se o metodo de newton nao convergiu a uma raiz depois de toda a iteracao, provavelmente nao existe raiz real;
+	return NAN; //se o metodo de newton nao convergiu a uma raiz depois de toda a iteracao, provavelmente nao existe raiz real;
 }

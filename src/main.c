@@ -15,7 +15,7 @@ void table_functions();
 int main()
 {
 	get_config_file();
-	MathExpression exp = {.status = EVAL};  //inicia com o formato padrão
+	MathExpression exp = {.input = "", .status = EVAL};  //inicia com o formato padrão
 	uint8_t op;
 	
 	map_operations();
@@ -23,7 +23,7 @@ int main()
 		exp.count_root = 0;
 		printf
 		(
-			" angulo : %s\t\t  "
+			" angulo : %s\t\t "
 			"intervalo: [-%d, %d]\n",
 			settings.angle == RAD ? "RAD" : "GRAU",
 			settings.range, settings.range
@@ -62,9 +62,8 @@ int main()
 			);
 			scanf("%512[^\n]s", exp.input);
 			setbuf(stdin, NULL);
-			
+		
 			call_solve(&exp);
-
 			printf("--------------------------------------------------\n");
 			break;
 		case 2:
@@ -165,6 +164,7 @@ void call_solve(MathExpression* exp)
 	}
 	save_historic(exp);
 }
+
 void call_eval_X(MathExpression* exp, double x){
 	removespace(exp->input);
 	strlower(exp->input);  //formata a função eliminando espaços, maiusculas e adicionando o caracter '*'

@@ -10,7 +10,7 @@
 #include "solve_equation.h"
 #include "config.h"
 
-const char valid_operate[] = {'+', '-', '*', '/', '(', ')', '^', '=', '[', ']', '{', '}'};
+const char valid_operate[] = {'+', '-', '*', '/', '(', ')', '^', '=', '.', ','};
 
 //verifica se é um dos operadores validos
 bool isoperat(char ch)
@@ -35,23 +35,6 @@ void removespace(char* exp) {
 	}
 	*ptr = '\0';
 	strcpy(begin_exp, temp);
-}
-
-//função de ordenação crescente para qsort
-int comp(const void *a, const void *b)
-{
-	if (*(double *)a < *(double *)b)
-		return -1;
-	else if (*(double *)a > *(double *)b)
-		return 1;
-	return 0;
-} 
-
-double derivate(char *exp, double value){
-	int temp = settings.angle;
-	settings.angle = RAD;
-	return ((eval_X(exp, (value + dx)) - eval_X(exp, value) )/ dx); //retorna a derivada de exo
-	settings.angle = temp;
 }
 
 //retorna: 0, caso não tenha caractere invalido. caso haja, retorna esse caractere
@@ -115,6 +98,7 @@ void add_product(char *input)
 			input += len_func;
 			continue;
 		}
+		if(*input == ',') *input = '.'; //adiciona a operação de ',
 		strncat(func, input, 1); //copia caracter a caracter input para func
 
 		char atual = *input;
@@ -259,7 +243,7 @@ double solve(MathExpression* exp){
 		printf("Erro: expressao com muitas variaveis\n");
 		return NAN;
 	case INVALID_CHAR:
-		printf("Erro: caracter invalido : %c", ch);
+		printf("Erro: caracter invalido : %c\n", ch);
 		return NAN;
 	case BRACKETS_ODD:
 		printf("Erro: Parenteses desbalanceados. Verifique se cada '(' tem um ')' correspondente.\n");
@@ -287,7 +271,8 @@ double get_eval(const char* msg) {
 		if(checkvar(rbuf) != NOT_VAR) read_status = EVAL_X;  
 		if(!balanced_brackets(rbuf)) read_status = BRACKETS_ODD;
 		if(ch != 0) read_status = INVALID_CHAR;
-		if(!isdigit(rbuf[0])) read_status = NO_RIGHT; 
+		if(strchr(rbuf, '=')) read_status = FORMAT_ERROR;
+		if(!lenFunc(rbuf) && !isdigit(rbuf[0])) read_status = NO_RIGHT; 
 
 		switch (read_status)
 		{
@@ -297,7 +282,7 @@ double get_eval(const char* msg) {
 			add_product(rbuf);  //formata o eval para não demonstrar comportamento indefinido e em seguida retorna
 			return eval(rbuf);
 		case EVAL_X:
-			printf("informe uma expressao numerica sem incognita\n");
+			printf("Erro: informe uma expressao numerica sem incognita\n");
 			break;
 		case BRACKETS_ODD:
 			printf("Erro: Parenteses desbalanceados. Verifique se cada '(' tem um ')' correspondente.\n");
@@ -306,7 +291,10 @@ double get_eval(const char* msg) {
 			printf("Erro: caracter invalido : %c\n", ch);
 			break;
 		case NO_RIGHT:
-			printf("informe uma expressao numerica\n");
+			printf("Erro: informe uma expressao numerica\n");
+			break;
+		case FORMAT_ERROR:
+			printf("Erro: funcoes possuem apenas uma igualdade\n");
 			break;
 		default:
 			printf("erro desconhecido\n");

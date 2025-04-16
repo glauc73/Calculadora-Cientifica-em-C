@@ -16,7 +16,7 @@
 #endif
 
 #ifndef NUM_VALID_OPERATE
-#define NUM_VALID_OPERATE 8
+#define NUM_VALID_OPERATE 10
 #endif
 
 #define ROOT_MAX 64
@@ -55,8 +55,6 @@ typedef struct {
 bool isoperat(char ch);
 void removespace(char* exp);
 char *func_composite(char *exp, const char *g_x);
-int comp(const void *a, const void *b);
-double derivate(char *exp, double value);
 char invalid_char(char *iterator);
 void Create_Function(MathExpression* exp);
 int isIdentity(MathExpression* exp);
