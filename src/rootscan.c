@@ -3,7 +3,7 @@
 
 extern program_config settings;
 
-int comp(const void *a, const void *b)
+int comp(const void *a, const void *b)  //função passada como paremetro da qsort para ordenar os candidatos a raíz
 {
 	if (*(double *)a < *(double *)b)
 		return -1;
