@@ -3,7 +3,7 @@
 
 extern program_config settings;
 
-int comp(const void *a, const void *b)
+int comp(const void *a, const void *b)  //função passada como paremetro da qsort para ordenar os candidatos a raíz
 {
 	if (*(double *)a < *(double *)b)
 		return -1;
@@ -73,7 +73,8 @@ double newton_method(char *exp, double x0)
 		double f_x_derivate = derivate(exp, x);
 		if (fabs(f_x_derivate) < EPSILON) {	//indica que incontrou um ponto de inflexao (derivada proxima o suficiente de 0)
 			return (fabs(x - x0) < dx) && (fabs(f_x) < EPSILON)  ? x : NAN;   //caso |f_x| seja muito proximo de 0, significa que o ponto de inflexao é uma raiz, se nao, retorna NAN
-		}
+		}//a condição de retorno foi, se x está convergindo e se abs(f_x) está pequeno o suficiente, pois se considerarmos apenas apenas a segunda, ao método de newton pega raízes maiores que esperado.
+		//ex: x^5 = 0 pode ter 0.0042 como raiz, mesmo que isso seja mentira, pois 0.0042^5 ja da um numero muito menor
 		x0 = x;
 		x = x - f_x / f_x_derivate;
 		
